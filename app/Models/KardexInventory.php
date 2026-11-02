@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KardexInventory extends Model
 {
-    protected $table = 'kardex_inventory';
+    protected $table = 'kardex_inventories';
 
     protected $fillable = [
         'product_id', 'user_id', 'order_id', 'type',

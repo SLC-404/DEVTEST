@@ -6,11 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Override;
 
 class Order extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
     protected $fillable = [
         'folio',
@@ -22,7 +20,7 @@ class Order extends Model
         'exchange_rate',
         'status',
         'payment_reference',
-        'order_at'
+        'ordered_at'
     ];
 
     protected function casts(): array
@@ -32,7 +30,7 @@ class Order extends Model
         'taxes' => 'decimal:2',
         'total' => 'decimal:2',
         'exchange_rate' => 'decimal:4',
-        'order_at' => 'datetime'
+        'ordered_at' => 'datetime'
         ];
     }
     public function client():BelongsTo{
