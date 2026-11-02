@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('exchange_rate',10,4);
             $table->string('status',20)->default('pending')->index();
             $table->string('payment_reference')->nullable();
-            $table->dateTime('order_at')->index();
+            $table->dateTime('ordered_at')->index();
             $table->timestamps();
         });
     }

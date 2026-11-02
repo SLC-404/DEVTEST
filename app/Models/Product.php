@@ -21,7 +21,7 @@ class Product extends Model
             'long_description',
             'cost_usd',
             'price_usd',
-            'price_mxm',
+            'price_mxn',
             'image',
             'stock',
             'valid_until',
@@ -32,7 +32,7 @@ class Product extends Model
         return[
             'cost_usd'=>'decimal:2',
             'price_usd'=>'decimal:2',
-            'price_mxm'=>'decimal:2',
+            'price_mxn'=>'decimal:2',
             'stock'=>'integer',
             'valid_until'=>'date',
             'is_active'=>'boolean'

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->text('long_description');
             $table->decimal('cost_usd',10,2);
             $table->decimal('price_usd',10,2);
-            $table->decimal('price_mxm',10,2);
+            $table->decimal('price_mxn',10,2);
             $table->string('image');
-            $table->unsignedBigInteger('stock')->default(0);
+            $table->unsignedInteger('stock')->default(0);
             $table->date('valid_until');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

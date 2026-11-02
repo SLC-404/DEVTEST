@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KardexPrice extends Model
 {
-    protected $table = 'kardex_price';
-
     protected $fillable = ['product_id', 'user_id', 'type', 'old_value', 'new_value', 'notes'];
 
     protected function casts(): array
