@@ -20,6 +20,7 @@
             ['label' => 'Categorías', 'route' => 'admin.categories.index', 'active' => 'admin.categories.*', 'permission' => 'categories.show'],
             ['label' => 'Pedidos',    'route' => 'admin.orders.index',     'active' => 'admin.orders.*',     'permission' => 'orders.show'],
             ['label' => 'Reportes',   'route' => 'admin.reports.index',    'active' => 'admin.reports.*',    'permission' => 'reports.show'],
+            ['label' => 'Tipo de cambio', 'route' => 'admin.exchange-rates.index', 'active' => 'admin.exchange-rates.*', 'permission' => 'exchange-rates.show'],
         ];
     @endphp
 
