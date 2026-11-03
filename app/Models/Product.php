@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 
 class Product extends Model
 {
@@ -100,7 +101,12 @@ class Product extends Model
             : asset('storage/' . $this->image));
     }
 
-
+    #[Scope]
+    protected function available($query)
+    {
+        return $query->where('is_active', true)
+            ->whereDate('valid_until', '>=', today());
+    }
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);

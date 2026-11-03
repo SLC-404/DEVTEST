@@ -5,9 +5,12 @@ use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\ExchangeRates;
 use App\Livewire\Admin\Products\Form as ProductsForm;
 use App\Livewire\Admin\Products\Index as ProductsIndex;
+use App\Livewire\Store\Catalog;
+use App\Livewire\Store\ProductDetail;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', Catalog::class)->name('home');
+Route::get('/details-products/{product}', ProductDetail::class)->name('products.detail');
 
 /* PERFIL */
 Route::view('profile', 'profile')
