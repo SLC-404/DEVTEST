@@ -15,12 +15,12 @@
 <body class="font-sans antialiased bg-gray-100 text-gray-800">
     @php
         $menu = [
-            ['label' => 'Dashboard',  'route' => 'admin.dashboard',        'active' => 'admin.dashboard',    'permission' => 'dashboard.show'],
-            ['label' => 'Productos',  'route' => 'admin.products.index',   'active' => 'admin.products.*',   'permission' => 'products.show'],
-            ['label' => 'Categorías', 'route' => 'admin.categories.index', 'active' => 'admin.categories.*', 'permission' => 'categories.show'],
-            ['label' => 'Pedidos',    'route' => 'admin.orders.index',     'active' => 'admin.orders.*',     'permission' => 'orders.show'],
-            ['label' => 'Reportes',   'route' => 'admin.reports.index',    'active' => 'admin.reports.*',    'permission' => 'reports.show'],
-            ['label' => 'Tipo de cambio', 'route' => 'admin.exchange-rates.index', 'active' => 'admin.exchange-rates.*', 'permission' => 'exchange-rates.show'],
+            ['label' => 'Dashboard',      'route' => 'dashboard',            'active' => 'dashboard',        'permission' => 'dashboard.show'],
+            ['label' => 'Productos',      'route' => 'products.index',       'active' => 'products.*',       'permission' => 'products.show'],
+            ['label' => 'Categorías',     'route' => 'categories.index',     'active' => 'categories.*',     'permission' => 'categories.show'],
+            ['label' => 'Pedidos',        'route' => 'orders.index',         'active' => 'orders.*',         'permission' => 'orders.show'],
+            ['label' => 'Reportes',       'route' => 'reports.index',        'active' => 'reports.*',        'permission' => 'reports.show'],
+            ['label' => 'Tipo de cambio', 'route' => 'exchange-rates.index', 'active' => 'exchange-rates.*', 'permission' => 'exchange-rates.show'],
         ];
     @endphp
 
