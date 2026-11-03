@@ -9,10 +9,17 @@ use App\Livewire\Store\Cart;
 use App\Livewire\Store\Catalog;
 use App\Livewire\Store\ProductDetail;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Store\Checkout;
+use App\Livewire\Store\OrderConfirmation;
 
 Route::get('/', Catalog::class)->name('home');
 Route::get('/details-products/{product}', ProductDetail::class)->name('products.detail');
 Route::get('/cart', Cart::class)->name('cart');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', Checkout::class)->name('checkout');
+    Route::get('/order/{order}/confirmation', OrderConfirmation::class)->name('order.confirmation');
+});
 
 /* PERFIL */
 Route::view('profile', 'profile')
@@ -33,15 +40,15 @@ Route::middleware(['auth', 'staff'])->group(function () {
 
     /* TIPO DE CAMBIO */
     Route::prefix('exchange-rates')->name('exchange-rates.')->group(function () {
-            Route::get('/', ExchangeRates::class)->middleware('permission:exchange-rates.show')->name('index');
+        Route::get('/', ExchangeRates::class)->middleware('permission:exchange-rates.show')->name('index');
     });
 
     /* PRODUCTOS */
     Route::prefix('products')->name('products.')->group(function () {
-            Route::get('/', ProductsIndex::class)->middleware('permission:products.show')->name('index');
-            Route::get('/create', ProductsForm::class)->middleware('permission:products.create')->name('create');
-            Route::get('/{product}/edit', ProductsForm::class)->middleware('permission:products.edit')->name('edit');
+        Route::get('/', ProductsIndex::class)->middleware('permission:products.show')->name('index');
+        Route::get('/create', ProductsForm::class)->middleware('permission:products.create')->name('create');
+        Route::get('/{product}/edit', ProductsForm::class)->middleware('permission:products.edit')->name('edit');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

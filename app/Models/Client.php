@@ -21,4 +21,8 @@ class Client extends Model
     {
         return $this->hasMany(Order::class);
     }
+    public function quotes(): HasMany
+    {
+        return $this->hasMany(Quote::class);
+    }
 }
