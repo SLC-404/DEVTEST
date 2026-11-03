@@ -11,6 +11,8 @@ use App\Livewire\Store\ProductDetail;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Store\Checkout;
 use App\Livewire\Store\OrderConfirmation;
+use App\Livewire\Admin\Orders\Index as OrdersIndex;
+use App\Livewire\Admin\Reports;
 
 Route::get('/', Catalog::class)->name('home');
 Route::get('/details-products/{product}', ProductDetail::class)->name('products.detail');
@@ -48,6 +50,16 @@ Route::middleware(['auth', 'staff'])->group(function () {
         Route::get('/', ProductsIndex::class)->middleware('permission:products.show')->name('index');
         Route::get('/create', ProductsForm::class)->middleware('permission:products.create')->name('create');
         Route::get('/{product}/edit', ProductsForm::class)->middleware('permission:products.edit')->name('edit');
+    });
+
+    /* PEDIDOS */
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', OrdersIndex::class)->middleware('permission:orders.show')->name('index');
+    });
+
+    /* REPORTES */
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', Reports::class)->middleware('permission:reports.show')->name('index');
     });
 });
 
