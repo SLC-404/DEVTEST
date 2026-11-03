@@ -1,6 +1,4 @@
 <div class="grid gap-6 lg:grid-cols-4">
-
-    {{-- Filtros --}}
     <aside class="p-5 space-y-5 bg-white shadow-sm rounded-xl lg:sticky lg:top-24 lg:self-start">
         <div>
             <label class="block text-sm font-medium text-gray-700">Buscar</label>
@@ -38,8 +36,6 @@
             Limpiar filtros
         </button>
     </aside>
-
-    {{-- Productos --}}
     <section class="space-y-4 lg:col-span-3">
         <div class="flex items-center justify-between">
             <p class="text-sm text-gray-500">{{ $products->total() }} productos</p>

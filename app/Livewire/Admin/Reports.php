@@ -32,57 +32,58 @@ class Reports extends Component
 
     public function render()
     {
-        $from = Carbon::parse($this->from)->startOfDay();
-        $to   = Carbon::parse($this->to)->endOfDay();
-
-        $base = fn() => DB::table('order_details')
+        $totals      = $this->totals();
+        $chart       = $this->chart();
+        $topProducts = $this->topProducts();
+        $this->dispatch('report-updated', ...$chart);
+        return view('livewire.admin.reports', [
+            'kpis'        => $totals,
+            'chart'       => $chart,
+            'topProducts' => $topProducts,
+        ]);
+    }
+    private function paidSales()
+    {
+        return OrderDetail::query()
             ->join('orders', 'orders.id', '=', 'order_details.order_id')
             ->where('orders.status', 'paid')
-            ->whereBetween('orders.ordered_at', [$from, $to]);
-
-        $salesExpr  = 'SUM(order_details.price_mxn * order_details.quantity)';
-        $profitExpr = 'SUM((order_details.price_mxn - order_details.cost_usd * orders.exchange_rate) * order_details.quantity)';
-
-        $kpis = $base()
-            ->selectRaw("$salesExpr as sales, $profitExpr as profit, COUNT(DISTINCT orders.id) as orders")
+            ->whereDate('orders.ordered_at', '>=', $this->from)
+            ->whereDate('orders.ordered_at', '<=', $this->to);
+    }
+    private function totals()
+    {
+        return $this->paidSales()
+            ->selectRaw('SUM(order_details.price_mxn * order_details.quantity) as sales')
+            ->selectRaw('SUM((order_details.price_mxn - order_details.cost_usd * orders.exchange_rate) * order_details.quantity) as profit')
+            ->selectRaw('COUNT(DISTINCT orders.id) as orders')
             ->first();
-
-        $sqlFormat = $this->groupBy === 'month' ? '%Y-%m' : '%Y-%m-%d';
-
-        $rows = $base()
-            ->selectRaw("DATE_FORMAT(orders.ordered_at, '$sqlFormat') as period, $salesExpr as sales, $profitExpr as profit")
+    }
+    private function chart(): array
+    {
+        $format = $this->groupBy === 'month' ? '%Y-%m' : '%Y-%m-%d';
+        $rows = $this->paidSales()
+            ->selectRaw("DATE_FORMAT(orders.ordered_at, '$format') as period")
+            ->selectRaw('SUM(order_details.price_mxn * order_details.quantity) as sales')
+            ->selectRaw('SUM((order_details.price_mxn - order_details.cost_usd * orders.exchange_rate) * order_details.quantity) as profit')
             ->groupBy('period')
-            ->get()
-            ->keyBy('period');
-
-        $periods = $this->groupBy === 'month'
-            ? CarbonPeriod::create($from->copy()->startOfMonth(), '1 month', $to)
-            : CarbonPeriod::create($from, '1 day', $to);
-
-        $chart = ['labels' => [], 'sales' => [], 'profit' => []];
-
-        foreach ($periods as $date) {
-            $key = $this->groupBy === 'month' ? $date->format('Y-m') : $date->format('Y-m-d');
-
-            $chart['labels'][] = $this->groupBy === 'month' ? $date->translatedFormat('M Y') : $date->format('d/m');
-            $chart['sales'][]  = round((float) ($rows[$key]->sales ?? 0), 2);
-            $chart['profit'][] = round((float) ($rows[$key]->profit ?? 0), 2);
-        }
-
-        $topProducts = OrderDetail::query()
-            ->join('orders', 'orders.id', '=', 'order_details.order_id')
-            ->where('orders.status', 'paid')
-            ->whereBetween('orders.ordered_at', [$from, $to])
+            ->orderBy('period')
+            ->get();
+        return [
+            'labels' => $rows->pluck('period')->all(),
+            'sales'  => $rows->pluck('sales')->map(fn ($value) => round($value, 2))->all(),
+            'profit' => $rows->pluck('profit')->map(fn ($value) => round($value, 2))->all(),
+        ];
+    }
+    private function topProducts()
+    {
+        return $this->paidSales()
             ->select('order_details.product_id')
-            ->selectRaw('SUM(order_details.quantity) as units, SUM(order_details.price_mxn * order_details.quantity) as sales')
+            ->selectRaw('SUM(order_details.quantity) as units')
+            ->selectRaw('SUM(order_details.price_mxn * order_details.quantity) as sales')
             ->groupBy('order_details.product_id')
             ->orderByDesc('units')
             ->limit(3)
             ->with('product')
             ->get();
-
-        $this->dispatch('report-updated', ...$chart);
-
-        return view('livewire.admin.reports', compact('kpis', 'chart', 'topProducts'));
     }
 }

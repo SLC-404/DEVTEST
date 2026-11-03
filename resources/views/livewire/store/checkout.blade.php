@@ -113,7 +113,7 @@
                 <div class="px-4 py-3 text-sm text-red-700 rounded-lg bg-red-50">{{ $paymentError }}</div>
             @endif
             <div class="px-4 py-3 text-xs text-gray-500 rounded-lg bg-gray-50">
-                🧪 Pago simulado: las tarjetas que terminan en <b>0000</b> se rechazan; cualquier otra se aprueba.
+                🧪 Pago simulado: las tarjetas cualquier se aprueban.
             </div>
             <button type="submit" wire:loading.attr="disabled" wire:target="pay"
                 class="w-full px-6 py-3 font-semibold text-white rounded-xl bg-violet-700 hover:bg-violet-800 disabled:opacity-50">

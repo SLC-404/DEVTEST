@@ -14,7 +14,7 @@ class PaymentService
     {
         usleep(800_000);
         $card = preg_replace('/\D/', '', $cardNumber);
-        $approved = ! str_ends_with($card, '0000');
+        $approved = true;
         $result = [
             'approved'  => $approved,
             'reference' => $approved ? 'SIM-' . strtoupper(Str::random(10)) : null,

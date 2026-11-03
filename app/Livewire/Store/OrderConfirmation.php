@@ -16,9 +16,7 @@ class OrderConfirmation extends Component
 
     public function mount(Order $order): void
     {
-        // Solo el dueño del pedido puede verlo
         abort_unless($order->client?->user_id === auth()->id(), 404);
-
         $this->order = $order->load('details.product');
     }
     public function render()

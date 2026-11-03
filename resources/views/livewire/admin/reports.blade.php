@@ -18,11 +18,11 @@
     @php $avg = $kpis->orders ? $kpis->sales / $kpis->orders : 0; @endphp
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div class="p-5 bg-white shadow-sm rounded-xl">
-            <p class="text-sm text-gray-500">Ventas (sin IVA)</p>
+            <p class="text-sm text-gray-500">Ventas (sin IVA) MXN</p>
             <p class="mt-2 text-2xl font-bold">${{ number_format((float) $kpis->sales, 2) }}</p>
         </div>
         <div class="p-5 bg-white shadow-sm rounded-xl">
-            <p class="text-sm text-gray-500">Ganancia</p>
+            <p class="text-sm text-gray-500">Ganancia MXN</p>
             <p class="mt-2 text-2xl font-bold text-orange-600">${{ number_format((float) $kpis->profit, 2) }}</p>
         </div>
         <div class="p-5 bg-white shadow-sm rounded-xl">
@@ -30,7 +30,7 @@
             <p class="mt-2 text-2xl font-bold">{{ $kpis->orders }}</p>
         </div>
         <div class="p-5 bg-white shadow-sm rounded-xl">
-            <p class="text-sm text-gray-500">Ticket promedio</p>
+            <p class="text-sm text-gray-500">Ticket promedio MXN</p>
             <p class="mt-2 text-2xl font-bold">${{ number_format($avg, 2) }}</p>
         </div>
     </div>
