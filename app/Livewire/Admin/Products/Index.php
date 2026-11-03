@@ -25,6 +25,8 @@ class Index extends Component
     #[Url(except: '')]
     public string $status = '';
 
+    public ?int $detailId = null;
+
     public function updated(string $property): void
     {
         if (in_array($property, ['search', 'category', 'status'])) {
@@ -51,21 +53,32 @@ class Index extends Component
         session()->flash('success', "Producto {$product->sku} eliminado.");
     }
 
+    public function showDetail(int $id): void
+    {
+        $this->authorize('products.show');
+        $this->detailId = $id;
+    }
+
+    public function closeDetail(): void
+    {
+        $this->detailId = null;
+    }
+
     public function render()
     {
         $products = Product::query()
             ->with('category')
-            ->when($this->search, fn ($query) => $query->where(fn ($q) => $q
+            ->when($this->search, fn($query) => $query->where(fn($q) => $q
                 ->where('name', 'like', "%{$this->search}%")
                 ->orWhere('sku', 'like', "%{$this->search}%")))
-            ->when($this->category, fn ($query) => $query->where('category_id', $this->category))
-            ->when($this->status === 'active', fn ($query) => $query->where('is_active', true))
-            ->when($this->status === 'inactive', fn ($query) => $query->where('is_active', false))
+            ->when($this->category, fn($query) => $query->where('category_id', $this->category))
+            ->when($this->status === 'active', fn($query) => $query->where('is_active', true))
+            ->when($this->status === 'inactive', fn($query) => $query->where('is_active', false))
             ->latest('id')
             ->paginate(10);
 
         $categories = Category::orderBy('name')->get();
-
-        return view('livewire.admin.products.index', compact('products', 'categories'));
+        $detail = $this->detailId ? Product::with('category')->find($this->detailId) : null;
+        return view('livewire.admin.products.index', compact('products', 'categories', 'detail'));
     }
 }
