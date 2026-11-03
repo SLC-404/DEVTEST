@@ -13,6 +13,7 @@ use App\Livewire\Store\Checkout;
 use App\Livewire\Store\OrderConfirmation;
 use App\Livewire\Admin\Orders\Index as OrdersIndex;
 use App\Livewire\Admin\Reports;
+use App\Livewire\Store\MyOrders;
 
 Route::get('/', Catalog::class)->name('home');
 Route::get('/details-products/{product}', ProductDetail::class)->name('products.detail');
@@ -21,6 +22,8 @@ Route::get('/cart', Cart::class)->name('cart');
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');
     Route::get('/order/{order}/confirmation', OrderConfirmation::class)->name('order.confirmation');
+
+    Route::get('/my-orders', MyOrders::class)->name('my-orders');
 });
 
 /* PERFIL */

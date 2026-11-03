@@ -26,6 +26,7 @@
                     @if (auth()->user()->roles()->exists())
                         <a href="{{ route('dashboard') }}" wire:navigate class="text-violet-700 hover:text-violet-900">Panel</a>
                     @endif
+                    <a href="{{ route('my-orders') }}" wire:navigate class="text-gray-600 hover:text-gray-900">Mis pedidos</a>
                     <span class="hidden text-gray-500 sm:inline">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

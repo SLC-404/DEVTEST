@@ -55,5 +55,6 @@
            class="inline-block px-6 py-3 font-semibold text-white rounded-xl bg-violet-700 hover:bg-violet-800">
             Seguir comprando
         </a>
+        <a href="{{ route('my-orders') }}" wire:navigate class="ml-3 text-sm font-medium text-violet-700 hover:text-violet-900">Ver mis pedidos</a>
     </div>
 </div>
