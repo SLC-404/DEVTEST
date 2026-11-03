@@ -34,5 +34,12 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'banxico'=>[
+        'token'=>env('BANXICO_TOKEN'),
+        'url'=>'https://www.banxico.org.mx/SieAPIRest/service/v1/series',
+        'series'=>[
+            'USD' => 'SF60653',
+        ]
+    ],
 
 ];

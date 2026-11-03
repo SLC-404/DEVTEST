@@ -1,7 +1,69 @@
 <?php
 
+use App\Livewire\Actions\Logout;
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\ExchangeRates;
+use App\Livewire\Admin\Products\Form as ProductsForm;
+use App\Livewire\Admin\Products\Index as ProductsIndex;
+use App\Livewire\Store\Cart;
+use App\Livewire\Store\Catalog;
+use App\Livewire\Store\ProductDetail;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Store\Checkout;
+use App\Livewire\Store\OrderConfirmation;
+use App\Livewire\Admin\Orders\Index as OrdersIndex;
+use App\Livewire\Admin\Reports;
+use App\Livewire\Store\MyOrders;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', Catalog::class)->name('home');
+Route::get('/details-products/{product}', ProductDetail::class)->name('products.detail');
+Route::get('/cart', Cart::class)->name('cart');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', Checkout::class)->name('checkout');
+    Route::get('/order/{order}/confirmation', OrderConfirmation::class)->name('order.confirmation');
+
+    Route::get('/my-orders', MyOrders::class)->name('my-orders');
 });
+
+/* PERFIL */
+Route::view('profile', 'profile')
+    ->middleware('auth')
+    ->name('profile');
+
+/* CERRAR SESIÓN */
+Route::post('logout', function (Logout $logout) {
+    $logout();
+    return redirect()->route('home');
+})->middleware('auth')->name('logout');
+
+/* ===================== ADMINISTRACIÓN ===================== */
+Route::middleware(['auth', 'staff'])->group(function () {
+
+    /* DASHBOARD */
+    Route::get('/dashboard', Dashboard::class)->middleware('permission:dashboard.show')->name('dashboard');
+
+    /* TIPO DE CAMBIO */
+    Route::prefix('exchange-rates')->name('exchange-rates.')->group(function () {
+        Route::get('/', ExchangeRates::class)->middleware('permission:exchange-rates.show')->name('index');
+    });
+
+    /* PRODUCTOS */
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', ProductsIndex::class)->middleware('permission:products.show')->name('index');
+        Route::get('/create', ProductsForm::class)->middleware('permission:products.create')->name('create');
+        Route::get('/{product}/edit', ProductsForm::class)->middleware('permission:products.edit')->name('edit');
+    });
+
+    /* PEDIDOS */
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', OrdersIndex::class)->middleware('permission:orders.show')->name('index');
+    });
+
+    /* REPORTES */
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', Reports::class)->middleware('permission:reports.show')->name('index');
+    });
+});
+
+require __DIR__ . '/auth.php';
