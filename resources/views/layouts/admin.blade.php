@@ -12,7 +12,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-gray-100 text-gray-800">
+<body class="font-sans antialiased text-gray-800 bg-gray-100">
     @php
         $menu = [
             ['label' => 'Dashboard',      'route' => 'dashboard',            'active' => 'dashboard',        'permission' => 'dashboard.show'],
@@ -29,13 +29,13 @@
              class="fixed inset-0 z-30 bg-black/40 lg:hidden"></div>
 
         <aside :class="sidebar ? 'translate-x-0' : '-translate-x-full'"
-               class="fixed inset-y-0 left-0 z-40 w-64 bg-violet-950 text-violet-100 transition-transform lg:static lg:translate-x-0">
-            <div class="flex h-16 items-center gap-2 border-b border-white/10 px-6">
-                <span class="grid h-8 w-8 place-items-center rounded-lg bg-orange-500 font-bold text-white">T</span>
+               class="fixed inset-y-0 left-0 z-40 w-64 transition-transform bg-violet-950 text-violet-100 lg:static lg:translate-x-0">
+            <div class="flex items-center h-16 gap-2 px-6 border-b border-white/10">
+                <span class="grid w-8 h-8 font-bold text-white bg-orange-500 rounded-lg place-items-center">T</span>
                 <span class="font-semibold text-white">{{ config('app.name') }}</span>
             </div>
 
-            <nav class="space-y-1 p-4">
+            <nav class="p-4 space-y-1">
                 @foreach ($menu as $item)
                     @if (Route::has($item['route']) && auth()->user()->can($item['permission']))
                         <a href="{{ route($item['route']) }}" wire:navigate
@@ -50,14 +50,15 @@
                 @endforeach
             </nav>
         </aside>
-        <div class="flex min-w-0 flex-1 flex-col">
-            <header class="flex h-16 items-center justify-between border-b bg-white px-4 sm:px-6">
+        <div class="flex flex-col flex-1 min-w-0">
+            <header class="flex items-center justify-between h-16 px-4 bg-white border-b sm:px-6">
                 <div class="flex items-center gap-3">
-                    <button @click="sidebar = true" class="rounded-md p-2 hover:bg-gray-100 lg:hidden" aria-label="Abrir menú">☰</button>
+                    <button @click="sidebar = true" class="p-2 rounded-md hover:bg-gray-100 lg:hidden" aria-label="Abrir menú">☰</button>
                     <h1 class="text-lg font-semibold">{{ $title ?? 'Panel' }}</h1>
                 </div>
 
                 <div class="flex items-center gap-4">
+                    <a href="{{ route('home') }}" wire:navigate class="text-sm text-gray-600 hover:text-gray-900">Comprar</a>
                     <span class="hidden text-sm text-gray-600 sm:block">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

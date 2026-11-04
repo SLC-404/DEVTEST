@@ -22,6 +22,7 @@
 
             <nav class="flex items-center gap-4 text-sm font-medium">
                 <livewire:store.cart-counter />
+                    <a href="{{ route('home') }}" wire:navigate class="text-gray-600 hover:text-gray-900">Comprar</a>
                 @auth
                     @if (auth()->user()->roles()->exists())
                         <a href="{{ route('dashboard') }}" wire:navigate class="text-violet-700 hover:text-violet-900">Panel</a>
